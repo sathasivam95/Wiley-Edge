@@ -8,7 +8,7 @@ public class Dvd {
 	// DTO's
 	private String title;
 	private LocalDate releaseDate;
-	private Double mpaaRating;
+	private String mpaaRating;
 	private String directorName;
 	private String studio;
 	private String userRating;
@@ -33,11 +33,11 @@ public class Dvd {
 		this.releaseDate = releaseDate;
 	}
 
-	public Double getMpaaRating() {
+	public String getMpaaRating() {
 		return mpaaRating;
 	}
 
-	public void setMpaaRating(Double mpaaRating) {
+	public void setMpaaRating(String mpaaRating) {
 		this.mpaaRating = mpaaRating;
 	}
 

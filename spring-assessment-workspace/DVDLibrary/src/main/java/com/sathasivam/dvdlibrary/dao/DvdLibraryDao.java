@@ -7,10 +7,9 @@ import java.util.Map;
 import com.sathasivam.dvdlibrary.dto.Dvd;
 
 
-
 public interface DvdLibraryDao {
 	
-	Dvd createDvd(String title, Dvd dvd);
+	Dvd addDvd(String title, Dvd dvd);
 	
 	List<Dvd> getAllDvd();
 	
@@ -18,7 +17,7 @@ public interface DvdLibraryDao {
 	
 	Dvd editReleaseDate(String title, LocalDate releaseDate);
 
-	Dvd editMpaaRating(String title, Double mpaaRating);
+	Dvd editMpaaRating(String title, String mpaaRating);
 	
 	Dvd editDirectorName(String title, String directorName);
 	
@@ -40,7 +39,4 @@ public interface DvdLibraryDao {
 	
 	Dvd removeDvd(String title);
 	
-
-	
-
 }

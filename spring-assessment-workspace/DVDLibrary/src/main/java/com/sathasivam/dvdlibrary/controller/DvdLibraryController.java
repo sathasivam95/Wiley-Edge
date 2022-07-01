@@ -1,5 +1,10 @@
 package com.sathasivam.dvdlibrary.controller;
 
+import java.util.List;
+
+import com.sathasivam.dvdlibrary.dao.DvdLibraryDao;
+import com.sathasivam.dvdlibrary.dao.DvdLibraryDaoFileImpl;
+import com.sathasivam.dvdlibrary.dto.Dvd;
 import com.sathasivam.dvdlibrary.ui.DvdLibraryView;
 import com.sathasivam.dvdlibrary.ui.UserIO;
 import com.sathasivam.dvdlibrary.ui.UserIOConsoleImpl;
@@ -8,6 +13,7 @@ public class DvdLibraryController {
 
 	private DvdLibraryView view = new DvdLibraryView();
     private UserIO io = new UserIOConsoleImpl();
+    private DvdLibraryDao dao = new DvdLibraryDaoFileImpl();
     
 
     public void run() {
@@ -21,10 +27,10 @@ public class DvdLibraryController {
 
             switch (menuSelection) {
 		        case 1:
-		        	io.print("CREATE DVD");
+		        	createDvd();
 		        	break;
 		        case 2:
-		        	io.print("LIST DVD");
+		        	listDvds();
 		        	break;
 		        case 3:
 		        	io.print("EDIT DVD");
@@ -51,5 +57,18 @@ public class DvdLibraryController {
     
     private int getMenuSelection() {
     	return view.printMenuAndGetSelection();
+    }
+    
+    private void createDvd() {
+       view.displayCreateDvdBanner();
+       Dvd newDvd = view.getNewDvdInfo();
+       dao.addDvd(newDvd.getTitle(), newDvd);
+       view.displayCreateSuccessBanner();
+    }
+    
+    private void listDvds() {
+    	view.displayAllDvdBanner();
+    	List<Dvd> dvdList = dao.getAllDvd();
+    	view.displayDvdList(dvdList);
     }
 }

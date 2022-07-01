@@ -1,5 +1,7 @@
 package com.sathasivam.dvdlibrary.ui;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class UserIOConsoleImpl implements UserIO {
@@ -201,6 +203,26 @@ public class UserIOConsoleImpl implements UserIO {
             result = readDouble(msgPrompt);
         } while (result < min || result > max);
         return result;
+    }
+    
+    @Override
+    public LocalDate readDate (String prompt){
+        LocalDate date = null;
+        boolean validInput = true;
+        do {
+            try {
+                System.out.println(prompt); 
+                System.out.println("Please input date in the format YYYY-MM-DD");
+                //Get the input line, try to convert it to a local date
+                String stringInput= console.nextLine();
+                date = LocalDate.parse(stringInput); //if its not in the correct format, itll break
+                validInput = true;
+            } catch (DateTimeException e) {
+                this.print("Input error. Date is not in the correct format");
+                validInput = false;
+            }
+        } while(!validInput);
+        return date;
     }
 
 }
