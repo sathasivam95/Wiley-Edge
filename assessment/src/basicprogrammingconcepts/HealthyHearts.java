@@ -1,3 +1,5 @@
+package basicprogrammingconcepts;
+
 import java.util.Scanner;
 
 public class HealthyHearts {
