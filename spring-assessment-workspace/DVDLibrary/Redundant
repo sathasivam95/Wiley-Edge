@@ -1,0 +1,105 @@
+    private void editReleaseDate(String title) {
+    	LocalDate newReleaseDate = view.getReleaseDate();
+    	Dvd editReleaseDate = dao.editReleaseDate(title, newReleaseDate);
+    	view.displayEditResult();
+    }
+    
+    private void editMpaaRating(String title) {
+    	String newMpaaRating = view.getMpaaRating();
+    	Dvd editMpaaRating = dao.editMpaaRating(title, newMpaaRating);
+    	view.displayEditResult();
+    }
+    
+    private void editDirectorName(String title) {
+    	String newDirectorName = view.getDirectorName();
+    	Dvd editDirectorname = dao.editDirectorName(title, newDirectorName);
+    	view.displayEditResult();
+    }
+    
+    private void editStudio(String title) {
+    	String newStudio = view.getStudio();
+    	Dvd editStudio = dao.editStudio(title, newStudio);
+    	view.displayEditResult();
+    }
+    
+    private void editUserRating(String title) {
+    	String newUserRating = view.getUserRating();
+    	Dvd editUserRating = dao.editUserRating(title, newUserRating);
+    	view.displayEditResult();
+    }
+    
+    #############################################################################
+    
+      public String getTitle () {
+	  return io.readString("Please enter the new DVD title.");
+	  
+  }
+
+
+  public void displayErrorMessage(String errorMsg) {
+      io.print("=== ERROR ===");
+      io.print(errorMsg);
+  }
+  
+  public void displayEditResult(){
+      io.print("DVD successfully edited.");
+  }
+  
+  
+  
+  ##########################################
+  
+  
+    private void editTitle(String title) {
+    	String newTitle = view.getTitle(); // get the old title
+    	Dvd editDvd = dao.editTitle(title); // sets the new title
+    	view.displayEditResult(); // displays success banner
+    	
+    }
+    
+    
+    
+    ########################################################################
+    
+    	@Override
+	public Dvd editTitle(String title) {
+		Dvd dvdToEdit = dvds.get(title);
+        dvdToEdit.setTitle(title);
+        return dvdToEdit;
+	}
+
+	@Override
+	public Dvd editReleaseDate(String title, LocalDate releaseDate) {
+        Dvd dvdToEdit = dvds.get(title);
+        dvdToEdit.setReleaseDate(releaseDate);
+        return dvdToEdit;
+	}
+
+	@Override
+	public Dvd editMpaaRating(String title, String mpaaRating) {
+		Dvd dvdToEdit = dvds.get(title);
+        dvdToEdit.setMpaaRating(mpaaRating);
+        return dvdToEdit;
+	}
+
+	@Override
+	public Dvd editDirectorName(String title, String directorName) {
+		Dvd dvdToEdit = dvds.get(title);
+        dvdToEdit.setDirectorName(directorName);
+        return dvdToEdit;
+	}
+
+	@Override
+	public Dvd editStudio(String title, String studio) {
+		Dvd dvdToEdit = dvds.get(title);
+        dvdToEdit.setStudio(studio);
+        return dvdToEdit;
+	}
+
+	@Override
+	public Dvd editUserRating(String title, String userRating) {
+		Dvd dvdToEdit = dvds.get(title);
+        dvdToEdit.setUserRating(userRating);
+        return dvdToEdit;
+	}
+  

@@ -212,7 +212,7 @@ public class UserIOConsoleImpl implements UserIO {
         do {
             try {
                 System.out.println(prompt); 
-                System.out.println("Please input date in the format YYYY-MM-DD");
+                System.out.println("Please enter the release date in YYYY-MM-DD");
                 //Get the input line, try to convert it to a local date
                 String stringInput= console.nextLine();
                 date = LocalDate.parse(stringInput); //if its not in the correct format, itll break

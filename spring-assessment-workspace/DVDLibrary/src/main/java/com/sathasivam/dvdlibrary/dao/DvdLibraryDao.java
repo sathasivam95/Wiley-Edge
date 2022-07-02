@@ -13,17 +13,15 @@ public interface DvdLibraryDao {
 	
 	List<Dvd> getAllDvd();
 	
-	Dvd editTitle(String title);
-	
-	Dvd editReleaseDate(String title, LocalDate releaseDate);
+	Dvd modifyReleaseDate(String title, LocalDate releaseDate);
 
-	Dvd editMpaaRating(String title, String mpaaRating);
+	Dvd modifyMpaaRating(String title, String mpaaRating);
 	
-	Dvd editDirectorName(String title, String directorName);
+	Dvd modifyDirectorName(String title, String directorName);
 	
-	Dvd editStudio(String title, String studio);
+	Dvd modifyStudio(String title, String studio);
 	
-	Dvd editUserRating(String title, String userRating);
+	Dvd modifyUserRating(String title, String userRating);
 	
 	Dvd getDvd(String title);
 	
