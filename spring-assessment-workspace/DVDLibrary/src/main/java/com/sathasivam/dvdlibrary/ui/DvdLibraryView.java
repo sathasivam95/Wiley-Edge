@@ -7,21 +7,24 @@ import com.sathasivam.dvdlibrary.dto.Dvd;
 
 public class DvdLibraryView {
 	
-  private UserIO io = new UserIOConsoleImpl();
+	public DvdLibraryView(UserIO io) {
+		this.io = io;
+	}
+	
+	private UserIO io;
 
   public int printMenuAndGetSelection() {
      
     io.print("DVD Library Main Menu");
     io.print("1. Create DVD");
-    io.print("2. List DVD");
+    io.print("2. List all DVD");
     io.print("3. Edit DVD");
-    io.print("4. Get DVD");
-    io.print("5. Find DVD");
-    io.print("6. Remove DVD");
-    io.print("7. Exit");
+    io.print("4. Search DVD by title");
+    io.print("5. Remove DVD");
+    io.print("6. Exit");
 
     return io.readInt("Please select from the"
-            + " above choices.", 1, 7);
+            + " above choices.", 1, 6);
     }
   
   public Dvd getNewDvdInfo() {
@@ -31,7 +34,7 @@ public class DvdLibraryView {
 	  String mpaaRating = io.readString("Please enter the MPAA rating");
 	  String directorName = io.readString("Please enter the director's name");
 	  String studio = io.readString("Please enter the studio");
-	  String userRating = io.readString("Please enter the rating");
+	  String userRating = io.readString("Please enter user rating");
   
 	  Dvd currentDvd = new Dvd(title);
 	  currentDvd.setReleaseDate(releaseDate);
@@ -167,5 +170,17 @@ public class DvdLibraryView {
 	  io.print("No DVD exists.");
   }
 	
+  public void displayExitBanner() {
+	  io.print("Good Bye!!!");
+  }
+  
+  public void displayUnknownCommandBanner() {
+	  io.print("Unknown Command!!!");
+  }
+  
+  public void displayErrorMessage(String errorMsg) {
+	  io.print("=== ERROR ===");
+	  io.print(errorMsg);
+  }
  
 }

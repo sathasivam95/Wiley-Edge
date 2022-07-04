@@ -2,16 +2,16 @@ package com.sathasivam.dvdlibrary.dao;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
+
 
 import com.sathasivam.dvdlibrary.dto.Dvd;
 
 
 public interface DvdLibraryDao {
 	
-	Dvd addDvd(String title, Dvd dvd);
+	Dvd addDvd(String title, Dvd dvd) throws DvdLibraryDaoException;
 	
-	List<Dvd> getAllDvd();
+	List<Dvd> getAllDvd()throws DvdLibraryDaoException;
 	
 	Dvd modifyReleaseDate(String title, LocalDate releaseDate);
 
@@ -23,18 +23,8 @@ public interface DvdLibraryDao {
 	
 	Dvd modifyUserRating(String title, String userRating);
 	
-	Dvd getDvd(String title);
+	Dvd getDvd(String title)throws DvdLibraryDaoException;
 	
-	Map<String, Dvd> getDvdsLastYears(Integer years);
-	    
-	Map<String, Dvd> getDvdsByMpaaRating(String mpaaRating);
-	
-	Map<String, Dvd> getDvdsByDirector(String directorName);
-	
-	Map<String, Dvd> getDvdsByStudio(String studio);
-	
-	Dvd findDvd(String title);
-	
-	Dvd removeDvd(String title);
+	Dvd removeDvd(String title) throws DvdLibraryDaoException;
 	
 }

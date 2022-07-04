@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.sathasivam.dvdlibrary.dao.DvdLibraryDao;
+import com.sathasivam.dvdlibrary.dao.DvdLibraryDaoException;
 import com.sathasivam.dvdlibrary.dao.DvdLibraryDaoFileImpl;
 import com.sathasivam.dvdlibrary.dto.Dvd;
 import com.sathasivam.dvdlibrary.ui.DvdLibraryView;
@@ -12,15 +13,20 @@ import com.sathasivam.dvdlibrary.ui.UserIOConsoleImpl;
 
 public class DvdLibraryController {
 
-	private DvdLibraryView view = new DvdLibraryView();
+	
+	public DvdLibraryController(DvdLibraryDao dao, DvdLibraryView view) {
+	    this.dao = dao;
+	    this.view = view;
+	}
+	
+	private DvdLibraryView view;
+	private DvdLibraryDao dao;
     private UserIO io = new UserIOConsoleImpl();
-    private DvdLibraryDao dao = new DvdLibraryDaoFileImpl();
-    
 
-    public void run() {
+    public void run(){
         boolean keepGoing = true;
         int menuSelection = 0;
-        
+        try {
         while (keepGoing) {
          
         	menuSelection = getMenuSelection();
@@ -39,40 +45,40 @@ public class DvdLibraryController {
 		        	viewDvd();
 		        	break;
 		        case 5:
-		        	io.print("FIND DVD");
-		        	break;
-		        case 6:
 		        	removeDvd();
 		            break;
-		        case 7:
+		        case 6:
 		            keepGoing = false;
 		            break;
 		        default:
-		            io.print("UNKNOWN COMMAND");
+		            unknownCommand();
             }
 
         }
-        io.print("GOOD BYE");
+        exitMessage();
+    }catch(DvdLibraryDaoException e) {
+    	view.displayErrorMessage(e.getMessage());
+    	}
     }
     
     private int getMenuSelection() {
     	return view.printMenuAndGetSelection();
     }
     
-    private void createDvd() {
+    private void createDvd() throws DvdLibraryDaoException{
        view.displayCreateDvdBanner();
        Dvd newDvd = view.getNewDvdInfo();
        dao.addDvd(newDvd.getTitle(), newDvd);
        view.displayCreateSuccessBanner();
     }
     
-    private void listDvds() {
+    private void listDvds() throws DvdLibraryDaoException{
     	view.displayAllDvdBanner();
     	List<Dvd> dvdList = dao.getAllDvd();
     	view.displayDvdList(dvdList);
     }
     
-   private void viewDvd() {
+   private void viewDvd() throws DvdLibraryDaoException{
 	   view.displayDisplayDvdBanner();    
 	   String title = view.getDvdTitleChoice(); 
 	   Dvd dvd = dao.getDvd(title);  
@@ -80,7 +86,7 @@ public class DvdLibraryController {
    }
    
    
-   private void removeDvd() {
+   private void removeDvd() throws DvdLibraryDaoException{
 	    view.displayRemoveDvdBanner();
 	    String title = view.getDvdTitleChoice();
 	   	Dvd removedDvd = dao.removeDvd(title);
@@ -91,7 +97,7 @@ public class DvdLibraryController {
    // Edit DVD Control
    
    
-private void editDvd()   {
+private void editDvd()  throws DvdLibraryDaoException {
    
     view.displayEditDvdBanner();
     String title = view.getDvdTitleChoice();
@@ -163,6 +169,14 @@ private void editDvd()   {
        Dvd editedDvd = dao.modifyStudio(title, newStudio);
        view.displayEditResult();
    }
+   
+   private void unknownCommand() {
+	    view.displayUnknownCommandBanner();
+	}
+
+	private void exitMessage() {
+	    view.displayExitBanner();
+	}
    
 
     

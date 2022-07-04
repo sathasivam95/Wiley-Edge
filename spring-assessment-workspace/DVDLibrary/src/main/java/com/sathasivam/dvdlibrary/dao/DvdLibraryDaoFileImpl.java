@@ -1,64 +1,55 @@
 package com.sathasivam.dvdlibrary.dao;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import com.sathasivam.dvdlibrary.dto.Dvd;
 
 public class DvdLibraryDaoFileImpl implements DvdLibraryDao{
 
-
 	private Map<String, Dvd> dvds = new HashMap<>();
 	
+	public static final String LIBRARY_FILE = "dvdlibrary.txt";
+	public static final String DELIMITER = "::";
+	
 	@Override
-	public Dvd addDvd(String title, Dvd dvd) {
+	public Dvd addDvd(String title, Dvd dvd) throws DvdLibraryDaoException{
+		loadLibrary();
 		Dvd prevDvd = dvds.put(title, dvd);
+		writeLibrary();
 		return prevDvd;
        
 	}
 
 	@Override
-	public List<Dvd> getAllDvd() {
-        return new ArrayList<Dvd>(dvds.values());
+	public List<Dvd> getAllDvd() throws DvdLibraryDaoException{
+        loadLibrary();
+		return new ArrayList<Dvd>(dvds.values());
 	}
 
 
 	@Override
-	public Dvd getDvd(String title) {
-        return dvds.get(title);
+	public Dvd getDvd(String title) throws DvdLibraryDaoException {
+        loadLibrary();
+		return dvds.get(title);
 	}
 
-	@Override
-	public Map<String, Dvd> getDvdsLastYears(Integer years) {
-        throw new UnsupportedOperationException("Not supported yet.");
-	}
 
 	@Override
-	public Map<String, Dvd> getDvdsByMpaaRating(String mpaaRating) {
-        throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public Map<String, Dvd> getDvdsByDirector(String directorName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public Map<String, Dvd> getDvdsByStudio(String studio) {
-        throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public Dvd findDvd(String title) {
-        throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public Dvd removeDvd(String title) {
+	public Dvd removeDvd(String title) throws DvdLibraryDaoException {
+		loadLibrary();
         Dvd removeDvd = dvds.remove(title);
+        writeLibrary();
         return removeDvd;
 	}
 
@@ -96,7 +87,119 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao{
 		dvdToEdit.setUserRating(userRating);
 		return dvdToEdit;
 	}
+	
+	// UnmarshallingDVD
+	
+	private Dvd unmarshallDvd(String dvdAsText) {
+		
+		String[] dvdTokens = dvdAsText.split(DELIMITER);
+		
+		String title = dvdTokens[0];
+	    String releaseDate = dvdTokens[1];
+        String mpaaRating = dvdTokens[2];
+        String directorName = dvdTokens[3];
+        String studio = dvdTokens[4];
+        String userRating = dvdTokens[5];
+        
+		Dvd dvdFromFile = new Dvd(title);
+		
+		dvdFromFile.setReleaseDate(LocalDate.parse(releaseDate));
+
+		dvdFromFile.setMpaaRating(mpaaRating);
+	
+		dvdFromFile.setDirectorName(directorName);
+
+		dvdFromFile.setStudio(studio);
+	
+		dvdFromFile.setUserRating(userRating);
+		
+		return dvdFromFile;
+		
+	}
+	
+	private void loadLibrary() throws DvdLibraryDaoException {
+	    Scanner scanner;
+
+	    try {
+	        // Create Scanner for reading the file
+	        scanner = new Scanner(
+	                new BufferedReader(
+	                        new FileReader(LIBRARY_FILE)));
+	    } catch (FileNotFoundException e) {
+	        throw new DvdLibraryDaoException(
+	                "-_- Could not load library data into memory.", e);
+	    }
+	    
+	    String currentLine;
+	   
+	    Dvd currentDvd;
+	   
+	    while (scanner.hasNextLine()) {
+	        // get the next line in the file
+	        currentLine = scanner.nextLine();
+	       
+	        currentDvd = unmarshallDvd(currentLine);
+
+	        dvds.put(currentDvd.getTitle(), currentDvd);
+	   
+	}
+	    // close scanner
+	    scanner.close();
+	}
+	
+	private String marshallStudent(Dvd aDvd){
+	   
+	    String dvdAsText = aDvd.getTitle() + DELIMITER;
+
+	    dvdAsText += aDvd.getReleaseDate() + DELIMITER;
+
+	    dvdAsText += aDvd.getMpaaRating() + DELIMITER;
+
+	    dvdAsText += aDvd.getDirectorName() + DELIMITER;
+
+	    dvdAsText += aDvd.getStudio() + DELIMITER;
+	
+	    dvdAsText += aDvd.getUserRating() + DELIMITER;
+	   
+	    return dvdAsText;
+	}
+	
+	/**
+	 * Writes all students in the roster out to a ROSTER_FILE.  See loadRoster
+	 * for file format.
+	 * 
+	 * @throws ClassRosterDaoException if an error occurs writing to the file
+	 */
+	private void writeLibrary() throws DvdLibraryDaoException {
+	
+	    PrintWriter out;
+
+	    try {
+	        out = new PrintWriter(new FileWriter(LIBRARY_FILE));
+	    } catch (IOException e) {
+	        throw new DvdLibraryDaoException(
+	                "Could not save DVD data.", e);
+	    }
+
+	 
+	    String dvdAsText;
+	    List<Dvd> dvdList = this.getAllDvd();
+	    for (Dvd currentDvd : dvdList) {
+	        // turn a Student into a String
+	        dvdAsText = marshallStudent(currentDvd);
+	        // write the Student object to the file
+	        out.println(dvdAsText);
+	        // force PrintWriter to write line to the file
+	        out.flush();
+	    }
+	    // Clean up
+	    out.close();
+	}
 
 
 
 }
+
+
+
+

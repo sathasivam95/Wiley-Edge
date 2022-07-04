@@ -3,6 +3,7 @@ package com.sathasivam.dvdlibrary.ui;
 import java.time.LocalDate;
 
 public interface UserIO {
+	
     void print(String msg);
 
     double readDouble(String prompt);
