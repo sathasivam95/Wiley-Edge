@@ -2,6 +2,7 @@ package com.sathasivam.dvdlibrary.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.sathasivam.dvdlibrary.dao.DvdLibraryDao;
 import com.sathasivam.dvdlibrary.dao.DvdLibraryDaoException;
@@ -45,9 +46,12 @@ public class DvdLibraryController {
 		        	viewDvd();
 		        	break;
 		        case 5:
+		        	findDvds();
+		        	break;
+		        case 6:
 		        	removeDvd();
 		            break;
-		        case 6:
+		        case 7:
 		            keepGoing = false;
 		            break;
 		        default:
@@ -56,8 +60,10 @@ public class DvdLibraryController {
 
         }
         exitMessage();
-    }catch(DvdLibraryDaoException e) {
+    } catch(DvdLibraryDaoException e) {
+    	
     	view.displayErrorMessage(e.getMessage());
+    	
     	}
     }
     
@@ -177,7 +183,61 @@ private void editDvd()  throws DvdLibraryDaoException {
 	private void exitMessage() {
 	    view.displayExitBanner();
 	}
-   
-
+	
+    private void findDvds() throws DvdLibraryDaoException {
+        view.displayFindDvdsBanner();
+            int findDvdsSelection = 0;
+            boolean keepGoing = true;
+            while (keepGoing) {
+                findDvdsSelection = view.printFindMenuAndGetSelection();
+                switch (findDvdsSelection){
+                    case 1:
+                        findMoviesLastNYears();
+                        break;
+                    case 2:
+                        findMoviesByMpaaRating();
+                        break;
+                    case 3:
+                        findMoviesByDirector();
+                        break;
+                    case 4:
+                        findMoviesByStudio();
+                        break;
+                    case 5:
+                        keepGoing = false;
+                        break;
+                    default:
+                        unknownCommand();
+                }
+//                if (keepGoing == false) {
+//                    break;
+            } 
+        }
+    private void findMoviesLastNYears() throws DvdLibraryDaoException {
+        int n = view.getNYears();
+        Map<String, Dvd> filteredDvds = dao.getDvdsLastYears(n);
+        view.displayDvds(filteredDvds);
+    }
     
+    private void findMoviesByMpaaRating() throws DvdLibraryDaoException {
+        String mpaaRating = view.getMpaaRating();
+        Map<String, Dvd> filteredDvds = dao.getDvdsByMpaaRating(mpaaRating);
+        view.displayDvds(filteredDvds);
+    }
+    
+    private void findMoviesByDirector() throws DvdLibraryDaoException {
+        String director = view.getDirectorName();
+        Map<String, Dvd> filteredDvds = dao.getDvdsByDirector(director);
+        view.displayDvds(filteredDvds);
+    }
+    private void findMoviesByStudio() throws DvdLibraryDaoException {
+        String studio = view.getStudio();
+        Map<String, Dvd> filteredDvds = dao.getDvdsByStudio(studio);
+        view.displayDvds(filteredDvds);
+    }
+ 
+
+
+
+
 }

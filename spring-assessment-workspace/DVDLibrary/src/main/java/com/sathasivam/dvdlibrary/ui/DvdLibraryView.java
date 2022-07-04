@@ -2,6 +2,7 @@ package com.sathasivam.dvdlibrary.ui;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.sathasivam.dvdlibrary.dto.Dvd;
 
@@ -20,11 +21,12 @@ public class DvdLibraryView {
     io.print("2. List all DVD");
     io.print("3. Edit DVD");
     io.print("4. Search DVD by title");
-    io.print("5. Remove DVD");
-    io.print("6. Exit");
+    io.print("5. Find DVD");
+    io.print("6. Remove DVD");
+    io.print("7. Exit");
 
     return io.readInt("Please select from the"
-            + " above choices.", 1, 6);
+            + " above choices.", 1, 7);
     }
   
   public Dvd getNewDvdInfo() {
@@ -183,4 +185,50 @@ public class DvdLibraryView {
 	  io.print(errorMsg);
   }
  
+  
+  public void displayFindDvdsBanner() {
+      io.print("=== Find DVDS ===");
+  }
+  
+  public int printFindMenuAndGetSelection() {
+      io.print("Find DVD menu");
+      io.print("1. Find all movies released in the last N years");
+      io.print("2. Find all movies by MPAA rating");
+      io.print("3. Find all movies by director");
+      io.print("4. Find all movies by Studio");
+      io.print("5. Exit find DVD menu");
+      return io.readInt("Please select from the above choices.", 1,5);
+  }
+  
+  public String displayDvds(Map<String, Dvd> filteredDvds) {
+	    if (filteredDvds.isEmpty()) {
+	        io.print("No DVDs to display");
+	    } else {
+	        String dvdHeadings = String.format("%25s | %12s | %4s | %17s | %7s | %25s", 
+	                "Title",
+	                "Release Date",
+	                "MPAA",
+	                "Director Name",
+	                "Rating",
+	                "Studio");
+	        io.print(dvdHeadings);
+	        io.print("-----------------------------------------------------------------------------------------------------------------");
+	        filteredDvds.values().stream()
+	                .forEach((Dvd) -> io.print(String.format("%25s | %12s | %4s | %17s | %7s | %25s",
+	                        Dvd.getTitle(),
+	                        Dvd.getReleaseDate(),
+	                        Dvd.getMpaaRating(),
+	                        Dvd.getDirectorName(),
+	                        Dvd.getUserRating(),
+	                        Dvd.getStudio())));
+	    }
+	    return io.readString("Please hit enter to continue");
+	     
+	    
+	}
+  
+  public int getNYears() {
+      return io.readInt("How many years? (N)");
+  }
+  
 }

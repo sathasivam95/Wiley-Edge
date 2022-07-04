@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.sathasivam.dvdlibrary.dto.Dvd;
 
@@ -196,6 +197,44 @@ public class DvdLibraryDaoFileImpl implements DvdLibraryDao{
 	    out.close();
 	}
 
+    @Override
+    public Map<String, Dvd> getDvdsLastYears(int years) throws DvdLibraryDaoException {
+        LocalDate now = LocalDate.now();
+        LocalDate sinceThisDate = now.minusYears(years);
+        loadLibrary();
+        Map<String, Dvd> dvdsLastYears = dvds.entrySet().stream()
+                .filter((dvd) -> dvd.getValue().getReleaseDate().isAfter(sinceThisDate))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return dvdsLastYears;
+    }
+    @Override
+    public Map<String, Dvd> getDvdsByMpaaRating(String mpaaRating) throws DvdLibraryDaoException {
+        loadLibrary();
+        Map<String, Dvd> dvdsMpaRating = dvds
+                .entrySet()
+                .stream()
+                .filter((dvd) -> dvd.getValue().getMpaaRating().equalsIgnoreCase(mpaaRating))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return dvdsMpaRating;
+    }
+    @Override
+    public Map<String, Dvd> getDvdsByDirector(String directorName) throws DvdLibraryDaoException {
+        loadLibrary();
+        Map<String, Dvd> dvdsByDirector = dvds
+                .entrySet()
+                .stream()
+                .filter((dvd) -> dvd.getValue().getDirectorName().equalsIgnoreCase(directorName))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return dvdsByDirector;
+    }
+    @Override
+    public Map<String, Dvd> getDvdsByStudio(String studioName) throws DvdLibraryDaoException {
+        loadLibrary();
+        Map<String, Dvd> dvdsByStudio = dvds
+                .entrySet().stream().filter((dvd) -> dvd.getValue().getStudio().equalsIgnoreCase(studioName))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return dvdsByStudio;
+    }
 
 
 }
