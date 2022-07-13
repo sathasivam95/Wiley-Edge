@@ -43,7 +43,7 @@ public class UserIOConsoleImpl implements UserIO {
      *
      * @param msgPrompt - String explaining what information you want from the user.
      * @return the answer to the message as integer
-     */
+     */ 
     @Override
     public int readInt(String msgPrompt) {
         boolean invalidInput = true;

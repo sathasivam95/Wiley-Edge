@@ -1,0 +1,7 @@
+Mars::2.10::20
+Snickers::1.30::20
+Sprite::2.00::19
+Milkybar::1.50::20
+Reese::1.60::20
+Pepsi::2.10::20
+Fanta::2.50::20
