@@ -3,6 +3,9 @@ package com.sathasivam.vendingmachine.ui;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserIOConsoleImpl implements UserIO{
 
     final private Scanner console = new Scanner(System.in);

@@ -3,9 +3,12 @@ package com.sathasivam.vendingmachine.service;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.sathasivam.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sathasivam.vendingmachine.dto.Item;
 
+@Component
 public interface VendingMachineServiceLayer {
 	
 

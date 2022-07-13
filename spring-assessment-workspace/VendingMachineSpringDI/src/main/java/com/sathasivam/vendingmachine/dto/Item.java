@@ -3,6 +3,8 @@ package com.sathasivam.vendingmachine.dto;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import org.springframework.stereotype.Component;
+
 public class Item {
     //Item DTO Data Transfer Object
     //User should not be able to change any of these properties
@@ -10,8 +12,6 @@ public class Item {
     private String name;
     private BigDecimal cost;
     private int inventory; // no of items in inventory
-    
-    
 
     public Item(String name, String cost, int inventory) {
         this.name = name;

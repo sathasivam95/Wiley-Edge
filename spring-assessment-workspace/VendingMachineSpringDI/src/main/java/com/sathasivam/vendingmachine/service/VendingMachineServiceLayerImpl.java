@@ -3,12 +3,15 @@ package com.sathasivam.vendingmachine.service;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.sathasivam.vendingmachine.dao.VendingMachineAuditDao;
 import com.sathasivam.vendingmachine.dao.VendingMachineDao;
 import com.sathasivam.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sathasivam.vendingmachine.dto.Change;
 import com.sathasivam.vendingmachine.dto.Item;
 
+@Component
 public class VendingMachineServiceLayerImpl implements VendingMachineServiceLayer{
     //The service layer is responsible for the business logic of an application. It sits between
     //the controller and DAOs.

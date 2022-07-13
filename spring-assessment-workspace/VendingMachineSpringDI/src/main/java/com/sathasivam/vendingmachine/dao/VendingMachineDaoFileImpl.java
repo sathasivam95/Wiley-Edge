@@ -14,8 +14,11 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import com.sathasivam.vendingmachine.dto.Item;
 
+@Component
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
    
 	private Map <String, Item> items = new HashMap<>();

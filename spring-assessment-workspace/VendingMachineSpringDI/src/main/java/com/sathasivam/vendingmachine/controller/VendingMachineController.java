@@ -3,6 +3,8 @@ package com.sathasivam.vendingmachine.controller;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.sathasivam.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sathasivam.vendingmachine.dto.Item;
 import com.sathasivam.vendingmachine.service.InsufficientFundsException;
@@ -12,9 +14,11 @@ import com.sathasivam.vendingmachine.ui.UserIO;
 import com.sathasivam.vendingmachine.ui.UserIOConsoleImpl;
 import com.sathasivam.vendingmachine.ui.VendingMachineView;
 
+@Component
 public class VendingMachineController {
 	
     private UserIO io = new UserIOConsoleImpl();
+    
     private VendingMachineView view;
     private VendingMachineServiceLayer service;
 
